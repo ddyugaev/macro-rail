@@ -28,15 +28,15 @@
 
 ## Структура
 
-arduino/macro_rail - [скетч для Arduino](/arduino/macro_rail/)  
-stl - [детали для 3D-печати](/stl/)  
-pcb - [схема и плата](/pcb/)  
+arduino/macro_rail - [скетч для Arduino](/Arduino/macro_rail/)  
+stl - [детали для 3D-печати](/STL/)  
+pcb - [схема и плата](/PCB/)  
 
 ## Компоненты 
 
 ### Пульт
 
-- [Печатная плата](/pcb/macro_rail_pcb.pdf) - 1шт
+- [Печатная плата](/PCB/macro_rail_pcb.pdf) - 1шт
 - Arduino nano (LGT8F328P-LQFP32) - 1шт
 - Шаговый мотор Nema17 (17HS4401) - 1шт
 - Драйвер шагового двигателя TMC2209 - 1шт
@@ -84,7 +84,7 @@ pcb - [схема и плата](/pcb/)
 
 ## Схема
 
-![Macro Rail Schematic](pcb/macro_rail_schematic.png "Macro Rail Schematic")
+![Macro Rail Schematic](PCB/macro_rail_schematic.png "Macro Rail Schematic")
 
 ## Arduino
 
@@ -113,9 +113,9 @@ extern StepperT<STEPP_ENA, STEPP_STEP, STEPP_DIR, STEPP_END, 16, 200, **8**> g_s
 
 ## File Structure
 
-arduino/macro_rail - [arduino sketch](/arduino/macro_rail)  
-stl - [3D-printable parts](/stl/)  
-pcb - [schematic and PCB layout](/pcb/)  
+arduino/macro_rail - [arduino sketch](/Arduino/macro_rail)  
+stl - [3D-printable parts](/STL/)  
+pcb - [schematic and PCB layout](/PCB/)  
 
 ## Bill Of Materials (BOM)
 
@@ -169,7 +169,7 @@ pcb - [schematic and PCB layout](/pcb/)
 
 ## Schematic
 
-![Macro Rail Schematic](pcb/macro_rail_schematic.png "Macro Rail Schematic")
+![Macro Rail Schematic](PCB/macro_rail_schematic.png "Macro Rail Schematic")
 
 ## Arduino
 
