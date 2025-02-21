@@ -22,6 +22,11 @@ void timerInterrupt() {
 void setup() {
   g_lcd.init();
   g_lcd.backlight();
+  g_lcd.setCursor(0, 0);
+  g_lcd.print("   MACRORAIL   ");
+  g_lcd.setCursor(0, 1);
+  g_lcd.print("            v1.0");
+  delay(2000);
   g_display.init();
   g_stepper.init();
 
@@ -47,7 +52,7 @@ void setup() {
 
   settingsMenu->finalize();
   g_mainMenu.insertMode(settingsMenu);
-  
+
   g_mainMenu.init();
 
   Timer1.initialize(1000);
