@@ -1,6 +1,6 @@
 #include "PhotoMode.h"
 
-PhotoMode::PhotoMode() 
+PhotoMode::PhotoMode()
   : ModeEnc(F("Start"))
 {
   m_message.reserve(10);
@@ -8,18 +8,18 @@ PhotoMode::PhotoMode()
 
 void PhotoMode::initImpl() {
   g_settings.finalize();
-  
+
   m_addition = 0;
   m_minPosition = 0;
   m_maxPosition = 0;
-  m_fromPosition = 0; 
+  m_fromPosition = 0;
   m_frameDepth = g_settings.toPosition > 0 ? g_settings.photoSettings.frameDepth : -g_settings.photoSettings.frameDepth;
   m_nFrames = g_settings.nFrames;
 
   m_currentStage = Stage::stDone;
   m_framesShot = 0;
   m_message = "";
-  
+
   g_stepper.enable();
   display();
   nextStage();
@@ -34,10 +34,11 @@ void PhotoMode::updateImpl() {
     return;
 
   String errorMsg;
-  if (m_currentStageWorker->isBroken(errorMsg))
+  if (m_currentStageWorker->isBroken(errorMsg)) {
     stopProcess(errorMsg);
-  else
+  } else {
     nextStage();
+  }
 }
 
 void PhotoMode::nextStage() {
@@ -46,10 +47,14 @@ void PhotoMode::nextStage() {
     case stInit:
       m_currentStage = stCountMove;
       m_currentStageWorker = &initStage;
-      initStage.start(m_fromPosition, m_fromPosition + g_stepper.mmToSteps(m_frameDepth*m_nFrames), g_settings.photoSettings.initSec, m_nFrames);
+      {
+        long targetPos = m_fromPosition + g_stepper.mmToSteps(m_frameDepth*m_nFrames);
+        initStage.start(m_fromPosition, targetPos, g_settings.photoSettings.initSec, m_nFrames);
+      }
       break;
     case stLoop:
       m_currentStage = stCalm;
+      [[fallthrough]];
     case stCalm:
       g_camera.focus();
       m_currentStageWorker = &timeoutStage;
@@ -85,25 +90,26 @@ void PhotoMode::stopProcess(const String & reason) {
 }
 
 void PhotoMode::updateMinMax() {
-  if (m_frameDepth > 0)
+  if (m_frameDepth > 0) {
     m_maxPosition = g_stepper.getPosition();
-  else
+  } else {
     m_minPosition = g_stepper.getPosition();
+  }
 }
 
 void PhotoMode::onClick() {
   if (m_currentStage == stDone) {
-    if (m_addition == 0)
+    if (m_addition == 0) {
       ModeEnc::onClick();
-    else {
+    } else {
       if (m_addition > 0) {
         m_frameDepth = abs(m_frameDepth);
-        m_nFrames = abs(m_addition); 
-        m_fromPosition =  m_maxPosition + g_stepper.mmToSteps(m_frameDepth);
+        m_nFrames = abs(m_addition);
+        m_fromPosition = m_maxPosition + g_stepper.mmToSteps(m_frameDepth);
       } else {
         m_frameDepth = -abs(m_frameDepth);
-        m_nFrames = abs(m_addition); 
-        m_fromPosition =  m_minPosition + g_stepper.mmToSteps(m_frameDepth);
+        m_nFrames = abs(m_addition);
+        m_fromPosition = m_minPosition + g_stepper.mmToSteps(m_frameDepth);
       }
 
       m_currentStage = Stage::stDone;
@@ -113,8 +119,9 @@ void PhotoMode::onClick() {
       display();
       nextStage();
     }
-  } else
+  } else {
     stopProcess("Stop");
+  }
 }
 
 void PhotoMode::onTurn(int dir) {
@@ -140,6 +147,6 @@ void PhotoMode::display() {
     msg += "extra ";
     msg += m_addition;
   }
-    
+
   displayValue(msg);
 }

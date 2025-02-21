@@ -16,7 +16,8 @@ void PhotoSettings::loadFromEEPROM(int addr) {
 }
 
 void Settings::finalize() {
-  nFrames = abs(g_stepper.stepsToMm(toPosition) / photoSettings.frameDepth);
+  double totalDistanceMm = g_stepper.stepsToMm(toPosition);
+  nFrames = abs(totalDistanceMm / photoSettings.frameDepth);
   if (nFrames == 0)
     nFrames = 1;
 }

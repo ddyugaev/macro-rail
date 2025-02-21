@@ -7,10 +7,11 @@
 class FromPositionMode : public FastManualMode {
 public:
   FromPositionMode() : FastManualMode(F("From position")) {};
-  
+
 protected:
   void onApply() override {
-    g_settings.toPosition += g_stepper.getPosition();
+    long oldPosition = g_stepper.getPosition();
+    g_settings.toPosition = g_settings.toPosition - oldPosition;
     g_stepper.resetPosition();
   };
 };

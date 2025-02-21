@@ -7,7 +7,9 @@
 class ToPositionMode : public FastManualMode {
 public:
   ToPositionMode() : FastManualMode(F("To position")) {};
-  
+
 protected:
-  void onApply() override {g_settings.toPosition = g_stepper.getPosition();};
+  void onApply() override {
+    g_settings.toPosition = g_stepper.getPosition();
+  };
 };
