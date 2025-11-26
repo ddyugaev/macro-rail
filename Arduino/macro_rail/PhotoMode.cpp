@@ -8,7 +8,6 @@ PhotoMode::PhotoMode()
 
 void PhotoMode::initImpl() {
   g_settings.finalize();
-
   m_addition = 0;
   m_minPosition = 0;
   m_maxPosition = 0;
@@ -99,54 +98,29 @@ void PhotoMode::updateMinMax() {
 
 void PhotoMode::onClick() {
   if (m_currentStage == stDone) {
-    if (m_addition == 0) {
-      ModeEnc::onClick();
-    } else {
-      if (m_addition > 0) {
-        m_frameDepth = abs(m_frameDepth);
-        m_nFrames = abs(m_addition);
-        m_fromPosition = m_maxPosition + g_stepper.mmToSteps(m_frameDepth);
-      } else {
-        m_frameDepth = -abs(m_frameDepth);
-        m_nFrames = abs(m_addition);
-        m_fromPosition = m_minPosition + g_stepper.mmToSteps(m_frameDepth);
-      }
-
-      m_currentStage = Stage::stDone;
-      m_framesShot = 0;
-      m_message = "";
-      m_addition = 0;
-      display();
-      nextStage();
-    }
+    // Return to menu immediately when stopped
+    ModeEnc::onClick();
   } else {
     stopProcess("Stop");
   }
 }
 
 void PhotoMode::onTurn(int dir) {
-  if (m_currentStage == stDone) {
-    m_addition -= dir;
-    display();
-  }
+  // No action when stopped - encoder turns are ignored
 }
 
 void PhotoMode::display() {
   String msg;
   msg.reserve(16);
-  if (m_addition == 0) {
-    msg += m_framesShot;
-    msg += " of ";
-    msg += m_nFrames;
+  msg += m_framesShot;
+  msg += " of ";
+  msg += m_nFrames;
 
-    if (m_message.length() > 0) {
-      msg += ": ";
-      msg += m_message;
-    }
-  } else {
-    msg += "extra ";
-    msg += m_addition;
+  if (m_message.length() > 0) {
+    msg += ": ";
+    msg += m_message;
   }
 
   displayValue(msg);
 }
+
